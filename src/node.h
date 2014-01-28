@@ -62,9 +62,12 @@
 #include "node_version.h"  // NODE_MODULE_VERSION
 
 #ifdef _WIN32
-# include <BaseTsd.h>
-typedef SSIZE_T ssize_t;
-typedef SIZE_T size_t;
+// TODO(tjfontaine) consider changing the usage of ssize_t to ptrdiff_t
+#if !defined(_SSIZE_T_) && !defined(_SSIZE_T_DEFINED)
+typedef intptr_t ssize_t;
+# define _SSIZE_T_
+# define _SSIZE_T_DEFINED
+#endif
 #else  // !_WIN32
 # include <sys/types.h>  // size_t, ssize_t
 #endif  // _WIN32
